@@ -1,26 +1,17 @@
 package org.atomicHabit.model;
 
-import org.atomicHabit.model.embedId.HabitId;
-
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Habit {
-    @EmbeddedId
-    private HabitId habitId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer habitId;
 
+    private Integer userId;
+    @Column(nullable = false)
     private String habitName;
-
-    public HabitId getHabitId() {
-        return habitId;
-    }
-
-    public void setHabitId(HabitId habitId) {
-        this.habitId = habitId;
-    }
 
     public String getHabitName() {
         return habitName;
@@ -30,11 +21,12 @@ public class Habit {
         this.habitName = habitName;
     }
 
-    public int getHide() {
+
+    public Integer getHide() {
         return hide;
     }
 
-    public void setHide(int hide) {
+    public void setHide(Integer hide) {
         this.hide = hide;
     }
 
@@ -45,8 +37,35 @@ public class Habit {
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+    @Column(nullable = false)
+    private  Integer hide;
 
-    private  int hide;
+    @Override
+    public String toString() {
+        return "Habit{" +
+                "habitId=" + habitId +
+                ", userId=" + userId +
+                ", habitName='" + habitName + '\'' +
+                ", hide=" + hide +
+                ", startDate=" + startDate +
+                '}';
+    }
+
+    public Integer getHabitId() {
+        return habitId;
+    }
+
+    public void setHabitId(Integer habitId) {
+        this.habitId = habitId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     private Date startDate;
 

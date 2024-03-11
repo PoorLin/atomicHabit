@@ -9,16 +9,16 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
-
+    @Column(nullable = false)
     private String userName;
-
+    @Column(nullable = false)
     private String email;
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -38,11 +38,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public int getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -62,9 +62,11 @@ public class User implements Serializable {
         this.token = token;
     }
 
-    private int sex;
-
+    @Column(nullable = false)
+    private Integer sex;
+    @Column(nullable = false)
     private String secret;
+
 
     private String token;
 
