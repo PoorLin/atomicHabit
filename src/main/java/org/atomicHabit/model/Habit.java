@@ -2,6 +2,8 @@ package org.atomicHabit.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+
 
 @Entity
 public class Habit {
@@ -37,6 +39,15 @@ public class Habit {
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+
+    public List<HabitRecord> getHabitRecordList() {
+        return habitRecordList;
+    }
+
+    public void setHabitRecordList(List<HabitRecord> habitRecordList) {
+        this.habitRecordList = habitRecordList;
+    }
+
     @Column(nullable = false)
     private  Integer hide;
 
@@ -68,5 +79,7 @@ public class Habit {
     }
 
     private Date startDate;
+    @OneToMany(mappedBy = "habit",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<HabitRecord> habitRecordList;
 
 }

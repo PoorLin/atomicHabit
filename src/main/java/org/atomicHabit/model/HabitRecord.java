@@ -63,4 +63,8 @@ public class HabitRecord {
     public void setHabitId(HabitRecordId habitId) {
         this.habitId = habitId;
     }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "habitId" ,insertable = false , updatable = false)
+    private Habit habit;
+
 }

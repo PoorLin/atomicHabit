@@ -9,12 +9,18 @@ public class habitConst {
 
     public static final Integer HABITRECORD_FAIL = 3;
 
+    // 成功
 
-
-// User Constance
     public static final Integer SUCCESS = 200;
 
+    // User Constance
+
+
     public static final Integer EMAIL_ALREADY_EXIST = 2001;
+
+
+    //Habit Constance
+    public static final Integer HABIT_ALREADY_EXIST = 3001;
 
 
 
