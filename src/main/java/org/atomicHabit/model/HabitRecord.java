@@ -22,8 +22,8 @@ public class HabitRecord {
         return reason;
     }
 
-    public HabitRecord(HabitRecordId habitId, Date recordDate,Integer status) {
-        this.habitId = habitId;
+    public HabitRecord(Integer habitId,Date recordDate,Integer status) {
+        this.habitId=habitId;
         this.recordDate = recordDate;
         this.status = status;
     }
@@ -31,8 +31,28 @@ public class HabitRecord {
     public void setReason(String reason) {
         this.reason = reason;
     }
-    @EmbeddedId
-    private HabitRecordId habitId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer habitRecordId;
+
+    public Integer getHabitId() {
+        return habitId;
+    }
+
+    public Integer getHabitRecordId() {
+        return habitRecordId;
+    }
+
+    public void setHabitRecordId(Integer habitRecordId) {
+        this.habitRecordId = habitRecordId;
+    }
+
+    public void setHabitId(Integer habitId) {
+        this.habitId = habitId;
+    }
+
+
+    private Integer habitId;
     @Column(nullable = false)
     private Date recordDate;
 
@@ -56,13 +76,14 @@ public class HabitRecord {
                 '}';
     }
 
-    public HabitRecordId getHabitId() {
-        return habitId;
+    public Habit getHabit() {
+        return habit;
     }
 
-    public void setHabitId(HabitRecordId habitId) {
-        this.habitId = habitId;
+    public void setHabit(Habit habit) {
+        this.habit = habit;
     }
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "habitId" ,insertable = false , updatable = false)
     private Habit habit;
