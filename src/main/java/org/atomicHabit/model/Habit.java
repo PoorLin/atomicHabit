@@ -1,12 +1,13 @@
 package org.atomicHabit.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 
 @Entity
-public class Habit {
+public class Habit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer habitId;
@@ -79,7 +80,7 @@ public class Habit {
     }
 
     private Date startDate;
-    @OneToMany(mappedBy = "habit",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "habit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<HabitRecord> habitRecordList;
 
 }

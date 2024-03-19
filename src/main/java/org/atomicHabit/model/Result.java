@@ -1,6 +1,8 @@
 package org.atomicHabit.model;
 
-public class Result<T> {
+import java.io.Serializable;
+
+public class Result<T> implements Serializable {
     private Integer returnCode;
     private  T data;
 

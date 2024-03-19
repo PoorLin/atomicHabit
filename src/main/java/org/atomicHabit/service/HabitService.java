@@ -1,5 +1,7 @@
 package org.atomicHabit.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.atomicHabit.dao.HabitDao;
 import org.atomicHabit.dao.HabitRecordDao;
 import org.atomicHabit.model.Habit;
@@ -63,9 +65,20 @@ public class HabitService {
         return new Result<>(SUCCESS);
     }
 
-    public Result getUserHabits(Integer userId){
-        List<Habit> userLisit=habitDao.findByUserId(userId);
-        return new Result<List<Habit>>(SUCCESS,userLisit);
+    public Result<List<Habit>> getUserHabits(Integer userId){
+        List<Habit> userList=habitDao.findByUserId(userId);
+        System.out.println(userList);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json=null;
+        try {
+             json = objectMapper.writeValueAsString(userList);
+            System.out.println(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return new Result<>(SUCCESS, userList);
     }
     public Result deleteHabit(Integer habitId){
         habitDao.deleteById(habitId);

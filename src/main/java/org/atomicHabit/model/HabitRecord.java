@@ -1,12 +1,14 @@
 package org.atomicHabit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.atomicHabit.model.embedId.HabitRecordId;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class HabitRecord {
+public class HabitRecord implements Serializable {
     public Date getRecordDate() {
         return recordDate;
     }
@@ -67,14 +69,6 @@ public class HabitRecord {
     }
 
     private Integer status;
-    @Override
-    public String toString() {
-        return "HabitRecord{" +
-                "habitId=" + habitId +
-                ", recordDate=" + recordDate +
-                ", reason='" + reason + '\'' +
-                '}';
-    }
 
     public Habit getHabit() {
         return habit;
@@ -84,7 +78,8 @@ public class HabitRecord {
         this.habit = habit;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "habitId" ,insertable = false , updatable = false)
     private Habit habit;
 
