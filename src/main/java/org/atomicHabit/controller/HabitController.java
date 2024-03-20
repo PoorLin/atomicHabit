@@ -18,6 +18,8 @@ public class HabitController {
     public Result addHabit(@RequestBody Habit habit){
         return   habitService.addHabit(habit);
     }
+
+
     @PostMapping("/addHabitRecord")
     public Result addHabitRecord(@RequestBody Habit habit){
         return   habitService.addHabitRecord(habit);

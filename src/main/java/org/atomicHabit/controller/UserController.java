@@ -1,5 +1,6 @@
 package org.atomicHabit.controller;
 
+import org.atomicHabit.model.Habit;
 import org.atomicHabit.model.Result;
 import org.atomicHabit.model.User;
 import org.atomicHabit.service.UserService;
@@ -28,4 +29,15 @@ public UserController(UserService userService){
     public Result updateUser(@RequestBody User user,@PathVariable Integer userId){
         return  userService.updateUser(user,userId);
     }
+
+    @PostMapping("/login")
+    public Result login(@RequestBody User user){
+        return   userService.login(user);
+    }
+    @PostMapping("/loginGoogle")
+    public Result loginByGoogle(@RequestBody User user){
+        System.out.println(user.getToken());
+        return   userService.loginByGoogle(user.getToken());
+    }
+
 }

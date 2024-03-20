@@ -3,6 +3,7 @@ package org.atomicHabit.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.atomicHabit.model.User;
 
 import javax.crypto.SecretKey;
 import java.security.MessageDigest;
@@ -12,13 +13,14 @@ import java.util.Date;
 public class Jwt{
 
     // 生成 JWT
-    public static String generateToken(String subject, long ttlMillis, String secretKey) {
+    public static String generateToken(String subject, User user, long ttlMillis, String secretKey) {
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
         Date now = new Date();
         Date exp = new Date(now.getTime() + ttlMillis);
 
         return Jwts.builder()
                 .setSubject(subject)
+                .claim("user",user)
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(key)
@@ -58,16 +60,18 @@ return  shaStr;
     }
 
     public static void main(String[] args) {
-        String secretKey = parseSHA256("your-secret-key");
+
+       String secretKey = parseSHA256("your-secret-key");
+        System.out.println(secretKey);
         String subject = "user123";
         long ttlMillis = 3600000; // 1 hour
         // 生成 JWT
-        String token = generateToken(subject, ttlMillis, secretKey);
-        System.out.println("Generated JWT: " + token);
-
-        // 驗證 JWT
-        Claims claims = parseToken(token, secretKey);
-        System.out.println("Subject: " + claims.getSubject());
-        System.out.println("Expiration: " + claims.getExpiration());
+//        String token = generateToken(subject, ttlMillis, secretKey);
+//        System.out.println("Generated JWT: " + token);
+//
+//        // 驗證 JWT
+//        Claims claims = parseToken(token, secretKey);
+//        System.out.println("Subject: " + claims.getSubject());
+//        System.out.println("Expiration: " + claims.getExpiration());
     }
 }
