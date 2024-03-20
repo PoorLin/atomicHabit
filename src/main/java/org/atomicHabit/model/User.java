@@ -64,6 +64,19 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private Integer sex;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", sex=" + sex +
+                ", secret='" + secret + '\'' +
+                ", token='" + token + '\'' +
+                '}';
+    }
+
     @Column(nullable = false)
     private String secret;
 

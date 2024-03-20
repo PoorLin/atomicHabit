@@ -12,10 +12,11 @@ import static org.atomicHabit.constance.habitConst.SUCCESS;
 public class UserController {
 
 private final UserService userService;
+
 public UserController(UserService userService){
     this.userService=userService;
 }
-    @PostMapping
+    @PostMapping("/addUser")
     public Result addUser(@RequestBody User user){
         return userService.addUser(user);
     }

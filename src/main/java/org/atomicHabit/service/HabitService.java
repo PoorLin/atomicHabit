@@ -32,19 +32,19 @@ public class HabitService {
         this.habitRecordDao=habitRecordDao;
     }
 
-    public Result addHabit( List<Habit> habitList){
+    public Result addHabit( Habit habit){
         Date today=new Date();
-        for(Habit habit:habitList){
+
             if(habitDao.existsByHabitName(habit.getHabitName())){ //存在相同習慣
                 new Result<>(HABIT_ALREADY_EXIST);
             }else {
-                Integer habitId=habitDao.save(habit).getHabitId();
-                HabitRecord habitRecord=new HabitRecord(habitId,today,HABITRECORD_INIT);
+                habit=habitDao.save(habit);
+                HabitRecord habitRecord=new HabitRecord(habit.getHabitId(),today,HABITRECORD_INIT);
                 habitRecordDao.save(habitRecord);
             }
 
-        }
-        return new Result<>(SUCCESS);
+
+        return new Result<>(SUCCESS,habit);
     }
 
     public Result addHabitRecord(Habit habit){
@@ -67,17 +67,6 @@ public class HabitService {
 
     public Result<List<Habit>> getUserHabits(Integer userId){
         List<Habit> userList=habitDao.findByUserId(userId);
-        System.out.println(userList);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json=null;
-        try {
-             json = objectMapper.writeValueAsString(userList);
-            System.out.println(json);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
         return new Result<>(SUCCESS, userList);
     }
     public Result deleteHabit(Integer habitId){

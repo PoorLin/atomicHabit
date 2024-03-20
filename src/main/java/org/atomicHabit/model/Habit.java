@@ -49,7 +49,6 @@ public class Habit implements Serializable {
         this.habitRecordList = habitRecordList;
     }
 
-    @Column(nullable = false)
     private  Integer hide;
 
     @Override

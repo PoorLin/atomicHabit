@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import static org.atomicHabit.constance.habitConst.EMAIL_ALREADY_EXIST;
 import static org.atomicHabit.constance.habitConst.SUCCESS;
+import static org.atomicHabit.util.Jwt.parseSHA256;
 
 @Service
 public class UserService {
@@ -17,11 +18,14 @@ public UserService(UserDao userDao){
 }
 
     public Result addUser(User user){
-      if(userDao.existsUserByEmail(user.getEmail())){
+      if(userDao.existsUserByEmailOrUserName(user.getEmail(),user.getUserName())){
           return new Result<>(EMAIL_ALREADY_EXIST);
       }else {
-          userDao.save(user);
-          return new Result<>(SUCCESS);
+          String sha256Secret=parseSHA256(user.getSecret());
+          user.setSecret(sha256Secret);
+          Integer id=userDao.save(user).getUserId();
+          userDao.flush();
+          return new Result<>(SUCCESS,id);
       }
     }
     public Result getUse( Integer id){

@@ -15,7 +15,7 @@ public class HabitController {
         this.habitService=habitService;
     }
     @PostMapping("/addHabit")
-    public Result addHabit(@RequestBody ArrayList<Habit> habit){
+    public Result addHabit(@RequestBody Habit habit){
         return   habitService.addHabit(habit);
     }
     @PostMapping("/addHabitRecord")
