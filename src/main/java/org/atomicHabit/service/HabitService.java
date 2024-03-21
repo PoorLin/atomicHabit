@@ -9,6 +9,7 @@ import org.atomicHabit.model.HabitRecord;
 import org.atomicHabit.model.Result;
 import org.atomicHabit.model.User;
 import org.atomicHabit.model.dto.CountRecord;
+import org.atomicHabit.model.dto.UpdateHabitStatus;
 import org.atomicHabit.model.embedId.HabitRecordId;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.atomicHabit.constance.habitConst.*;
@@ -36,8 +38,9 @@ public class HabitService {
         Date today=new Date();
 
             if(habitDao.existsByHabitName(habit.getHabitName())){ //存在相同習慣
-                new Result<>(HABIT_ALREADY_EXIST);
+              return new Result<>(HABIT_ALREADY_EXIST);
             }else {
+                habit.setStatus(HABITRECORD_INIT);
                 habit=habitDao.save(habit);
                 HabitRecord habitRecord=new HabitRecord(habit.getHabitId(),today,HABITRECORD_INIT);
                 habitRecordDao.save(habitRecord);
@@ -64,8 +67,33 @@ public class HabitService {
        return new Result<>(SUCCESS);
     }
     public Result updateHabit( Habit habit){
-        habitDao.save(habit);
-        return new Result<>(SUCCESS);
+
+        Optional<Habit> nowHabitOpt=habitDao.findById(habit.getHabitId());
+        if(nowHabitOpt.isPresent()){
+            Habit nowHabit=nowHabitOpt.get();
+            String newName=habit.getHabitName();
+            if(habitDao.existsByHabitName(newName)) return new Result<>(HABIT_ALREADY_EXIST);
+            else {
+                nowHabit.setHabitName(habit.getHabitName());
+                habitDao.save(nowHabit);
+                return new Result<>(SUCCESS);
+            }
+        }else {
+            return new Result<>(HABIT_NOT_EXIST);
+        }
+    }
+
+    public Result updateHabitStatus( UpdateHabitStatus updateHabitStatus){
+
+        Optional<Habit> nowHabitOpt=habitDao.findById(updateHabitStatus.getHabitId());
+        if(nowHabitOpt.isPresent()){
+            Habit nowHabit=nowHabitOpt.get();
+              nowHabit.setStatus(updateHabitStatus.getStatus());
+            habitDao.save(nowHabit);
+            return new Result<>(SUCCESS);
+        }else {
+            return new Result<>(HABIT_NOT_EXIST);
+        }
     }
 
     public Result<List<Habit>> getUserHabits(Integer userId){

@@ -38,5 +38,13 @@ public UserController(UserService userService){
     public Result loginByGoogle(@RequestBody User user){
         return   userService.loginByGoogle(user.getToken());
     }
+    @PostMapping("/forgotPass")
+    public Result forgotPass(@RequestBody User user){
+        return userService.forgotPass(user);
+    }
+    @PostMapping("/ChangePass")
+    public Result ChangePass(@RequestBody User user){
+        return userService.ChangePass(user);
+    }
 
 }

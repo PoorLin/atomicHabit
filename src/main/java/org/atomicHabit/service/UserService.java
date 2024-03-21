@@ -8,6 +8,7 @@ import org.atomicHabit.dao.UserDao;
 import org.atomicHabit.model.Habit;
 import org.atomicHabit.model.Result;
 import org.atomicHabit.model.User;
+import org.atomicHabit.util.JavaMail;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,10 @@ import java.security.PublicKey;
 import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
+import java.util.Optional;
 
 import static org.atomicHabit.constance.habitConst.*;
+import static org.atomicHabit.util.JavaMail.genAuthCode;
 import static org.atomicHabit.util.Jwt.generateToken;
 import static org.atomicHabit.util.Jwt.parseSHA256;
 
@@ -31,6 +34,8 @@ public class UserService {
     private  String jwtKey;
     @Value("${jwt.exipred}")
     private String jwtExpired;
+    @Value("${java.mail}")
+    private String javaSecret;
 
 
 public UserService(UserDao userDao){
@@ -70,18 +75,42 @@ public UserService(UserDao userDao){
         return new Result<>(SUCCESS,userRe);
     }
     public Result loginByGoogle( String token){
-//        RestTemplate restTemplate = new RestTemplate();
-//        String jwkSetUri = "https://www.googleapis.com/oauth2/v3/certs";
-//        ResponseEntity<JWKSet> responseEntity = restTemplate.getForEntity(jwkSetUri, JWKSet.class);
-//        JWKSet jwkSet = responseEntity.getBody();
         String jwtToken = token;
         String[] parts = jwtToken.split("\\.");
-
         String decodedHeader = new String(Base64.getDecoder().decode(parts[0]));
         String decodedPayload = new String(Base64.getDecoder().decode(parts[1]));
-
         System.out.println("Decoded Header: " + decodedHeader);
         System.out.println("Decoded Payload: " + decodedPayload);
         return new Result<>(SUCCESS);
     }
+
+    public Result forgotPass( User user){
+        JavaMail javaMail=new JavaMail();
+        if(userDao.existsUserByEmail(user.getEmail())){
+            javaMail.setPASSWORD(javaSecret);
+            javaMail.setRECIPIENT(user.getEmail());
+            String secret=genAuthCode();
+            javaMail.setTXT("驗證碼為 :"+secret);
+            javaMail.sendMail();
+            return new Result<>(SUCCESS,secret);
+
+        }else {
+            return new Result<>(EMAIL_NOT_EXIST);
+
+        }
+    }
+
+    public Result ChangePass( User user){
+         User nowUser=userDao.findByEmail(user.getEmail());
+      String newSecret = user.getSecret();
+         if( nowUser!= null &&  newSecret!= null){
+             String sha256Secret=parseSHA256(newSecret);
+             nowUser.setSecret(sha256Secret);
+            userDao.save(nowUser);
+             return new Result<>(SUCCESS);
+         }else {
+             return new Result<>(EMAIL_NOT_EXIST);
+         }
+    }
+
 }

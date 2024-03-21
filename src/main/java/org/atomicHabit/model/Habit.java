@@ -24,15 +24,6 @@ public class Habit implements Serializable {
         this.habitName = habitName;
     }
 
-
-    public Integer getHide() {
-        return hide;
-    }
-
-    public void setHide(Integer hide) {
-        this.hide = hide;
-    }
-
     public Date getStartDate() {
         return startDate;
     }
@@ -45,11 +36,19 @@ public class Habit implements Serializable {
         return habitRecordList;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public void setHabitRecordList(List<HabitRecord> habitRecordList) {
         this.habitRecordList = habitRecordList;
     }
 
-    private  Integer hide;
+    private  Integer status;
 
     @Override
     public String toString() {
@@ -57,7 +56,6 @@ public class Habit implements Serializable {
                 "habitId=" + habitId +
                 ", userId=" + userId +
                 ", habitName='" + habitName + '\'' +
-                ", hide=" + hide +
                 ", startDate=" + startDate +
                 '}';
     }

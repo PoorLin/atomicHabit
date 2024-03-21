@@ -13,7 +13,6 @@ public class OAuthController {
         RestTemplate restTemplate = new RestTemplate();
         String jwkSetUri = "https://www.googleapis.com/oauth2/v3/certs";
         ResponseEntity<String> response = restTemplate.getForEntity(jwkSetUri, String.class);
-        System.out.println(response);
         return response;
     }
 }

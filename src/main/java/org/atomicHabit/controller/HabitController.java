@@ -2,6 +2,7 @@ package org.atomicHabit.controller;
 
 import org.atomicHabit.model.Habit;
 import org.atomicHabit.model.Result;
+import org.atomicHabit.model.dto.UpdateHabitStatus;
 import org.atomicHabit.service.HabitService;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
@@ -48,5 +49,10 @@ public class HabitController {
     @PostMapping("/compareOther")
     public Result compareHabitWithOther(@RequestBody Habit habit){
         return habitService.compareHabitWithOther(habit);
+    }
+
+    @PutMapping("/updateHabitStatus")
+    public Result updateHabitStatus( @RequestBody UpdateHabitStatus updateHabitStatus){
+        return  habitService.updateHabitStatus(updateHabitStatus);
     }
 }
