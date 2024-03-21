@@ -17,6 +17,7 @@ public class habitConst {
 
 
     public static final Integer EMAIL_ALREADY_EXIST = 2001;
+    public static final Integer USER_NOT_EXIST = 2002;
 
 
     //Habit Constance

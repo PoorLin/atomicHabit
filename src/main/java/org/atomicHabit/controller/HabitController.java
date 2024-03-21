@@ -5,6 +5,7 @@ import org.atomicHabit.model.Result;
 import org.atomicHabit.service.HabitService;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 @RequestMapping("/habit")
@@ -16,7 +17,13 @@ public class HabitController {
     }
     @PostMapping("/addHabit")
     public Result addHabit(@RequestBody Habit habit){
-        return   habitService.addHabit(habit);
+        if(habit != null){
+            habit.setStartDate(new Date());
+            return   habitService.addHabit(habit);
+        }else {
+            return   habitService.addHabit(habit);
+        }
+
     }
 
 

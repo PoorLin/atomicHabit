@@ -36,7 +36,6 @@ public UserController(UserService userService){
     }
     @PostMapping("/loginGoogle")
     public Result loginByGoogle(@RequestBody User user){
-        System.out.println(user.getToken());
         return   userService.loginByGoogle(user.getToken());
     }
 

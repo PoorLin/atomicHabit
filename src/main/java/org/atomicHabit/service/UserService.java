@@ -20,8 +20,7 @@ import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
 
-import static org.atomicHabit.constance.habitConst.EMAIL_ALREADY_EXIST;
-import static org.atomicHabit.constance.habitConst.SUCCESS;
+import static org.atomicHabit.constance.habitConst.*;
 import static org.atomicHabit.util.Jwt.generateToken;
 import static org.atomicHabit.util.Jwt.parseSHA256;
 
@@ -62,6 +61,9 @@ public UserService(UserDao userDao){
     public Result login( User user){
         String sha256Secret=parseSHA256(user.getSecret());
         User userRe=userDao.findByEmailAndSecret(user.getEmail(),sha256Secret);
+        if(userRe == null){
+            return new Result<>(USER_NOT_EXIST);
+        }
         String token=generateToken(userRe.getUserName(),userRe, Long.parseLong(jwtExpired),jwtKey);
         userRe.setToken(token);
         System.out.println(token);
