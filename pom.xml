@@ -73,5 +73,11 @@
         <version>9.11</version> <!-- 版本号可能会有所变化，请检查最新版本 -->
     </dependency>
 
+    <dependency>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>javax.mail</artifactId>
+        <version>1.6.2</version>
+    </dependency>
+
 </dependencies>
 </project>
