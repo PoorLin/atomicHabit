@@ -12,7 +12,7 @@ import java.util.List;
 public interface HabitDao extends JpaRepository<Habit, Integer> {
 
 
-    public List<Habit> findByUserId(Integer id);
+    public List<Habit> findByUserIdOrderByHabitId(Integer id);
 
     public List<Habit> findByHabitNameContaining(String habitName);
 
@@ -29,4 +29,5 @@ public interface HabitDao extends JpaRepository<Habit, Integer> {
 
     @Query("select count(*) from Habit h left outer join HabitRecord hr on h.habitId=hr.habitId where h.habitName like %?1% AND h.userId = ?2 AND hr.status = ?3")
     Integer countMyOneHabitSuccess(String habitName,Integer userId,Integer status);
+
 }

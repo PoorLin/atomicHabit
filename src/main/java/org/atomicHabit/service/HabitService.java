@@ -9,6 +9,7 @@ import org.atomicHabit.model.HabitRecord;
 import org.atomicHabit.model.Result;
 import org.atomicHabit.model.User;
 import org.atomicHabit.model.dto.CountRecord;
+import org.atomicHabit.model.dto.MakeChartReq;
 import org.atomicHabit.model.dto.UpdateHabitStatus;
 import org.atomicHabit.model.embedId.HabitRecordId;
 import org.springframework.stereotype.Service;
@@ -97,21 +98,22 @@ public class HabitService {
     }
 
     public Result<List<Habit>> getUserHabits(Integer userId){
-        List<Habit> userList=habitDao.findByUserId(userId);
+        List<Habit> userList=habitDao.findByUserIdOrderByHabitId(userId);
         return new Result<>(SUCCESS, userList);
     }
     public Result deleteHabit(Integer habitId){
         habitDao.deleteById(habitId);
         return new Result<>(SUCCESS);
     }
-    public Result compareHabitWithOther(Habit habit){
-         Integer countAll=habitDao.countAllOneHabit(habit.getHabitName(),HABITRECORD_INIT);
-        Integer countMy=habitDao.countMyOneHabit(habit.getHabitName(),habit.getUserId(),HABITRECORD_INIT);
+    public Result compareHabitWithOther(MakeChartReq makeChartReq){
+         Integer countAllUser=habitDao.countAllOneHabit(makeChartReq.getHabitName(),HABITRECORD_INIT);
 
-        Integer countAllSuccess=habitDao.countAllOneHabitSuccess(habit.getHabitName(),HABITRECORD_SUCCESS);
-        Integer countMySuccess=habitDao.countMyOneHabitSuccess(habit.getHabitName(),habit.getUserId(),HABITRECORD_SUCCESS);
+        Integer countAllUserSuccess=habitDao.countAllOneHabitSuccess(makeChartReq.getHabitName(),HABITRECORD_SUCCESS);
+        Integer countMySuccess=habitDao.countMyOneHabitSuccess(makeChartReq.getHabitName(),makeChartReq.getUserId(),HABITRECORD_SUCCESS);
 
-        return new Result<>(SUCCESS,new CountRecord(countMy,countAll));
+        Integer countMyAll=habitDao.countMyOneHabit(makeChartReq.getHabitName(),makeChartReq.getUserId(),HABITRECORD_INIT);
+
+        return new Result<>(SUCCESS,new CountRecord(countMyAll,countMySuccess,countAllUser,countAllUserSuccess));
     }
 
 }

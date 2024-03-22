@@ -3,32 +3,47 @@ package org.atomicHabit.model.dto;
 import java.io.Serializable;
 
 public class CountRecord implements Serializable {
-    private Integer countMy;
+    private Integer myAll;
+    private Integer myAllSuccess;
+    private Integer allUserAll;
+    private Integer allUserAllSuccess;
 
-    public Integer getCountMy() {
-        return countMy;
+    public CountRecord(Integer myAll, Integer myAllSuccess, Integer allUserAll, Integer allUserAllSuccess) {
+        this.myAll = myAll;
+        this.myAllSuccess = myAllSuccess;
+        this.allUserAll = allUserAll;
+        this.allUserAllSuccess = allUserAllSuccess;
     }
 
-    public CountRecord() {
+    public Integer getMyAll() {
+        return myAll;
     }
 
-    public CountRecord(Integer countMy, Integer countAll) {
-        this.countMy = countMy;
-        this.countAll = countAll;
+    public void setMyAll(Integer myAll) {
+        this.myAll = myAll;
     }
 
-    public void setCountMy(Integer countMy) {
-        this.countMy = countMy;
+    public Integer getMyAllSuccess() {
+        return myAllSuccess;
     }
 
-    public Integer getCountAll() {
-        return countAll;
+    public void setMyAllSuccess(Integer myAllSuccess) {
+        this.myAllSuccess = myAllSuccess;
     }
 
-    public void setCountAll(Integer countAll) {
-        this.countAll = countAll;
+    public Integer getAllUserAll() {
+        return allUserAll;
     }
 
-    private Integer countAll;
+    public void setAllUserAll(Integer allUserAll) {
+        this.allUserAll = allUserAll;
+    }
 
+    public Integer getAllUserAllSuccess() {
+        return allUserAllSuccess;
+    }
+
+    public void setAllUserAllSuccess(Integer allUserAllSuccess) {
+        this.allUserAllSuccess = allUserAllSuccess;
+    }
 }

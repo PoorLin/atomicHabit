@@ -2,6 +2,7 @@ package org.atomicHabit.controller;
 
 import org.atomicHabit.model.Habit;
 import org.atomicHabit.model.Result;
+import org.atomicHabit.model.dto.MakeChartReq;
 import org.atomicHabit.model.dto.UpdateHabitStatus;
 import org.atomicHabit.service.HabitService;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +47,9 @@ public class HabitController {
     public Result deleteUserHabits(@PathVariable Integer habitId){
         return habitService.deleteHabit(habitId);
     }
-    @PostMapping("/compareOther")
-    public Result compareHabitWithOther(@RequestBody Habit habit){
-        return habitService.compareHabitWithOther(habit);
+    @PostMapping("/makeChart")
+    public Result compareHabitWithOther(@RequestBody MakeChartReq makeChartReq){
+        return habitService.compareHabitWithOther(makeChartReq);
     }
 
     @PutMapping("/updateHabitStatus")
