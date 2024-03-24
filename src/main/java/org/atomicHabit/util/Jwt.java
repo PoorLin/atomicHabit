@@ -1,13 +1,16 @@
 package org.atomicHabit.util;
 
+import com.mysql.cj.util.Base64Decoder;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.atomicHabit.model.User;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Date;
 
 public class Jwt{
@@ -53,6 +56,7 @@ public class Jwt{
             }
             shaStr=hexString.toString();
         } catch (NoSuchAlgorithmException e) {
+
             e.printStackTrace();
         }
 return  shaStr;
@@ -61,11 +65,21 @@ return  shaStr;
 
     public static void main(String[] args) {
 
-       String secretKey = parseSHA256("your-secret-key");
-        System.out.println(secretKey);
+//       String secretKey = parseSHA256("your-secret-key");
+//        System.out.println(secretKey);
         String subject = "user123";
         long ttlMillis = 3600000; // 1 hour
         // 生成 JWT
+        String[] parts = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFkZjVlNzEwZWRmZWJlY2JlZmE5YTYxNDk1NjU0ZDAzYzBiOGVkZjgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI4NzMwMTc5MDE0NzMtcXRxdDdtbTNlMTlkNWc0a2cxcGZ0NjRicmlpYmxiNTMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI4NzMwMTc5MDE0NzMtcXRxdDdtbTNlMTlkNWc0a2cxcGZ0NjRicmlpYmxiNTMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDMxMjcxMzk4Mjg3MjY5OTk5MzciLCJlbWFpbCI6InM4MDUzMnNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTcxMTE5NDQzMCwibmFtZSI6Iuael-mWjuW7uiIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKMGZkSG13VE5lMEFNSHhGNWFzZU1zV1ZoWl9Bdzd0dXdFQm5YNXFLMGY9czk2LWMiLCJnaXZlbl9uYW1lIjoi6ZaO5bu6IiwiZmFtaWx5X25hbWUiOiLmnpciLCJpYXQiOjE3MTExOTQ3MzAsImV4cCI6MTcxMTE5ODMzMCwianRpIjoiNzg2NWEyNDA2MGEzMThmYTllNDE1ODg1MDdkYTgwMDE2ZjI3ZGMyMyJ9".split("\\.", 0);
+
+        for (String part : parts) {
+            byte[] bytes = Base64.getUrlDecoder().decode(part);
+            String decodedString = new String(bytes,StandardCharsets.UTF_8);
+
+            System.out.println("Decoded: " + decodedString);
+        }
+
+
 //        String token = generateToken(subject, ttlMillis, secretKey);
 //        System.out.println("Generated JWT: " + token);
 //

@@ -79,8 +79,7 @@ public UserService(UserDao userDao){
         String[] parts = jwtToken.split("\\.");
         String decodedHeader = new String(Base64.getDecoder().decode(parts[0]));
         String decodedPayload = new String(Base64.getDecoder().decode(parts[1]));
-        System.out.println("Decoded Header: " + decodedHeader);
-        System.out.println("Decoded Payload: " + decodedPayload);
+
         return new Result<>(SUCCESS);
     }
 
