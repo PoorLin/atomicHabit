@@ -77,6 +77,17 @@ public class Habit implements Serializable {
     }
 
     private Date startDate;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    @Column(nullable = false)
+    private Integer type;
     @OneToMany(mappedBy = "habit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<HabitRecord> habitRecordList;
 

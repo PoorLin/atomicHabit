@@ -38,7 +38,7 @@ public class HabitService {
     public Result addHabit( Habit habit){
         Date today=new Date();
 
-            if(habitDao.existsByHabitName(habit.getHabitName())){ //存在相同習慣
+            if(habitDao.existsByHabitNameAndUserId(habit.getHabitName(),habit.getUserId())){ //存在相同習慣
               return new Result<>(HABIT_ALREADY_EXIST);
             }else {
                 habit.setStatus(HABITRECORD_INIT);
@@ -73,7 +73,7 @@ public class HabitService {
         if(nowHabitOpt.isPresent()){
             Habit nowHabit=nowHabitOpt.get();
             String newName=habit.getHabitName();
-            if(habitDao.existsByHabitName(newName)) return new Result<>(HABIT_ALREADY_EXIST);
+            if(habitDao.existsByHabitNameAndUserId(newName,habit.getUserId())) return new Result<>(HABIT_ALREADY_EXIST);
             else {
                 nowHabit.setHabitName(habit.getHabitName());
                 habitDao.save(nowHabit);

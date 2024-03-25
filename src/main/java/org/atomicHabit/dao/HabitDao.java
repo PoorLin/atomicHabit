@@ -16,7 +16,7 @@ public interface HabitDao extends JpaRepository<Habit, Integer> {
 
     public List<Habit> findByHabitNameContaining(String habitName);
 
-    public boolean existsByHabitName(String habitName);
+    public boolean existsByHabitNameAndUserId(String habitName,Integer userId);
 
     @Query("select count(*) from Habit h left outer join HabitRecord hr on h.habitId=hr.habitId where h.habitName like %?1% AND hr.status != ?2")
     Integer countAllOneHabit(String habitName,Integer status);
