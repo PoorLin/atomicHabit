@@ -75,6 +75,7 @@ public class HabitService {
             if(habitDao.existsByHabitNameAndUserId(newName,habit.getUserId())) return new Result<>(HABIT_ALREADY_EXIST);
             else {
                 nowHabit.setHabitName(habit.getHabitName());
+                nowHabit.setStatus(habit.getStatus());
                 habitDao.save(nowHabit);
                 return new Result<>(SUCCESS);
             }

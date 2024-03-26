@@ -23,6 +23,10 @@ public class habitConst {
 
 
     //Habit Constance
+
+    public static final Integer HABIT_TYPE_NUMBER = 0;
+
+    public static final Integer HABIT_TYPE_NOT_NUMBER = 1;
     public static final Integer HABIT_ALREADY_EXIST = 3001;
     public static final Integer HABIT_NOT_EXIST = 3002;
 
