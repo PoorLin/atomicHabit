@@ -16,6 +16,17 @@ public class Habit implements Serializable {
     @Column(nullable = false)
     private String habitName;
 
+    private  Integer status;
+
+    private Date startDate;
+
+    @Column(nullable = false)
+    private Integer type;
+
+    @OneToMany(mappedBy = "habit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<HabitRecord> habitRecordList;
+
+
     public String getHabitName() {
         return habitName;
     }
@@ -48,7 +59,7 @@ public class Habit implements Serializable {
         this.habitRecordList = habitRecordList;
     }
 
-    private  Integer status;
+
 
     @Override
     public String toString() {
@@ -76,7 +87,6 @@ public class Habit implements Serializable {
         this.userId = userId;
     }
 
-    private Date startDate;
 
     public Integer getType() {
         return type;
@@ -86,9 +96,6 @@ public class Habit implements Serializable {
         this.type = type;
     }
 
-    @Column(nullable = false)
-    private Integer type;
-    @OneToMany(mappedBy = "habit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<HabitRecord> habitRecordList;
+
 
 }

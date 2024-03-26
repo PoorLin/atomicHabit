@@ -37,7 +37,6 @@ public class HabitService {
 
     public Result addHabit( Habit habit){
         Date today=new Date();
-
             if(habitDao.existsByHabitNameAndUserId(habit.getHabitName(),habit.getUserId())){ //存在相同習慣
               return new Result<>(HABIT_ALREADY_EXIST);
             }else {

@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static org.atomicHabit.constance.habitConst.HABIT_VALUE_INVALID;
+import static org.atomicHabit.constance.habitConst.SUCCESS;
+
 
 @RequestMapping("/habit")
 @RestController
@@ -20,10 +23,9 @@ public class HabitController {
     @PostMapping("/addHabit")
     public Result addHabit(@RequestBody Habit habit){
         if(habit != null){
-            habit.setStartDate(new Date());
             return   habitService.addHabit(habit);
         }else {
-            return   habitService.addHabit(habit);
+            return   new Result<>(HABIT_VALUE_INVALID);
         }
 
     }

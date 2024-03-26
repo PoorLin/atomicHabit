@@ -26,6 +26,8 @@ public class habitConst {
     public static final Integer HABIT_ALREADY_EXIST = 3001;
     public static final Integer HABIT_NOT_EXIST = 3002;
 
+    public static final Integer HABIT_VALUE_INVALID = 3002;
+
 
 
 }
