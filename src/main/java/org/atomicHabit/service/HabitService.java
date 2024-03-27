@@ -40,13 +40,10 @@ public class HabitService {
             if(habitDao.existsByHabitNameAndUserId(habit.getHabitName(),habit.getUserId())){ //存在相同習慣
               return new Result<>(HABIT_ALREADY_EXIST);
             }else {
+                habit.setStartDate(today);
                 habit.setStatus(HABITRECORD_INIT);
                 habit=habitDao.save(habit);
-                HabitRecord habitRecord=new HabitRecord(habit.getHabitId(),today,HABITRECORD_INIT);
-                habitRecordDao.save(habitRecord);
             }
-
-
         return new Result<>(SUCCESS,habit);
     }
 
@@ -107,12 +104,9 @@ public class HabitService {
     }
     public Result compareHabitWithOther(MakeChartReq makeChartReq){
          Integer countAllUser=habitDao.countAllOneHabit(makeChartReq.getHabitName(),HABITRECORD_INIT);
-
         Integer countAllUserSuccess=habitDao.countAllOneHabitSuccess(makeChartReq.getHabitName(),HABITRECORD_SUCCESS);
         Integer countMySuccess=habitDao.countMyOneHabitSuccess(makeChartReq.getHabitName(),makeChartReq.getUserId(),HABITRECORD_SUCCESS);
-
         Integer countMyAll=habitDao.countMyOneHabit(makeChartReq.getHabitName(),makeChartReq.getUserId(),HABITRECORD_INIT);
-
         return new Result<>(SUCCESS,new CountRecord(countMyAll,countMySuccess,countAllUser,countAllUserSuccess));
     }
 
