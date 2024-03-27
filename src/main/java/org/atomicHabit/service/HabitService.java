@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.atomicHabit.dao.HabitDao;
 import org.atomicHabit.dao.HabitRecordDao;
-import org.atomicHabit.model.Habit;
-import org.atomicHabit.model.HabitRecord;
-import org.atomicHabit.model.Result;
-import org.atomicHabit.model.User;
+import org.atomicHabit.dao.UnitTypeDao;
+import org.atomicHabit.model.*;
 import org.atomicHabit.model.dto.CountRecord;
 import org.atomicHabit.model.dto.MakeChartReq;
 import org.atomicHabit.model.dto.UpdateHabitStatus;
@@ -30,9 +28,12 @@ import static org.atomicHabit.constance.habitConst.*;
 public class HabitService {
     private final HabitDao habitDao;
     private final HabitRecordDao habitRecordDao;
-    public HabitService(HabitDao habitDao,HabitRecordDao habitRecordDao){
+
+    private  final UnitTypeDao unitTypeDao;
+    public HabitService(HabitDao habitDao,HabitRecordDao habitRecordDao,UnitTypeDao unitTypeDao){
         this.habitDao=habitDao;
         this.habitRecordDao=habitRecordDao;
+        this.unitTypeDao=unitTypeDao;
     }
 
     public Result addHabit( Habit habit){
@@ -64,7 +65,7 @@ public class HabitService {
        return new Result<>(SUCCESS);
     }
     public Result updateHabit( Habit habit){
-
+        System.out.println(habit);
         Optional<Habit> nowHabitOpt=habitDao.findById(habit.getHabitId());
         if(nowHabitOpt.isPresent()){
             Habit nowHabit=nowHabitOpt.get();
@@ -108,6 +109,21 @@ public class HabitService {
         Integer countMySuccess=habitDao.countMyOneHabitSuccess(makeChartReq.getHabitName(),makeChartReq.getUserId(),HABITRECORD_SUCCESS);
         Integer countMyAll=habitDao.countMyOneHabit(makeChartReq.getHabitName(),makeChartReq.getUserId(),HABITRECORD_INIT);
         return new Result<>(SUCCESS,new CountRecord(countMyAll,countMySuccess,countAllUser,countAllUserSuccess));
+    }
+
+    public Result addUnitType(UnitType unitType){
+        if (unitType != null){
+            unitTypeDao.save(unitType);
+            return new Result<>(SUCCESS);
+        }else {
+            return new Result<>(DATA_ERROR);
+        }
+
+    }
+
+    public Result getTags(){
+        List<UnitType> unitTypes=unitTypeDao.findAll();
+        return new Result<>(SUCCESS,unitTypes);
     }
 
 }

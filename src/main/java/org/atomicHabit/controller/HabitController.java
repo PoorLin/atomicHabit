@@ -2,6 +2,7 @@ package org.atomicHabit.controller;
 
 import org.atomicHabit.model.Habit;
 import org.atomicHabit.model.Result;
+import org.atomicHabit.model.UnitType;
 import org.atomicHabit.model.dto.MakeChartReq;
 import org.atomicHabit.model.dto.UpdateHabitStatus;
 import org.atomicHabit.service.HabitService;
@@ -17,6 +18,7 @@ import static org.atomicHabit.constance.habitConst.SUCCESS;
 @RestController
 public class HabitController {
     private HabitService habitService;
+
     public HabitController(HabitService habitService){
         this.habitService=habitService;
     }
@@ -58,4 +60,15 @@ public class HabitController {
     public Result updateHabitStatus( @RequestBody UpdateHabitStatus updateHabitStatus){
         return  habitService.updateHabitStatus(updateHabitStatus);
     }
+
+    @PostMapping("/addUnitType")
+    public Result addUnitType(@RequestBody UnitType unitType){
+        return habitService.addUnitType(unitType);
+    }
+
+    @GetMapping("/getTags")
+    public Result getTags(){
+        return habitService.getTags();
+    }
+
 }

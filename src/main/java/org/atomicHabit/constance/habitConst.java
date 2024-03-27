@@ -13,6 +13,10 @@ public class habitConst {
 
     public static final Integer SUCCESS = 200;
 
+
+    // common fault
+    public static final Integer DATA_ERROR = 8001;
+
     // User Constance
 
 
