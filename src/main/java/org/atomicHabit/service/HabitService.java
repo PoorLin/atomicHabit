@@ -65,13 +65,14 @@ public class HabitService {
        return new Result<>(SUCCESS);
     }
     public Result updateHabit( Habit habit){
-        System.out.println(habit);
         Optional<Habit> nowHabitOpt=habitDao.findById(habit.getHabitId());
         if(nowHabitOpt.isPresent()){
             Habit nowHabit=nowHabitOpt.get();
             String newName=habit.getHabitName();
             if(habitDao.existsByHabitNameAndUserId(newName,habit.getUserId())) return new Result<>(HABIT_ALREADY_EXIST);
             else {
+                nowHabit.setHabitTarget(habit.getHabitTarget());
+                nowHabit.setUnitTypeId(habit.getUnitTypeId());
                 nowHabit.setHabitName(habit.getHabitName());
                 nowHabit.setStatus(habit.getStatus());
                 habitDao.save(nowHabit);
@@ -98,6 +99,15 @@ public class HabitService {
     public Result<List<Habit>> getUserHabits(Integer userId){
         List<Habit> userList=habitDao.findByUserIdOrderByHabitId(userId);
         return new Result<>(SUCCESS, userList);
+    }
+
+    public Result<Habit> getHabitById(Integer userId){
+        Optional<Habit> optionalHabit=habitDao.findById(userId);
+        if(optionalHabit.isPresent()){
+            return new Result<>(SUCCESS, optionalHabit.get());
+        }else {
+            return new Result<>(HABIT_NOT_EXIST) ;
+        }
     }
     public Result deleteHabit(Integer habitId){
         habitDao.deleteById(habitId);

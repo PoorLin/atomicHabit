@@ -16,12 +16,26 @@ public class Habit implements Serializable {
     @Column(nullable = false)
     private String habitName;
 
+
+    private String habitTarget;
+
     private  Integer status;
 
     private Date startDate;
 
     @Column(nullable = false)
     private Integer type;
+
+
+    private Integer unitTypeId;
+
+    public Integer getUnitTypeId() {
+        return unitTypeId;
+    }
+
+    public void setUnitTypeId(Integer unitTypeId) {
+        this.unitTypeId = unitTypeId;
+    }
 
     @OneToMany(mappedBy = "habit",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<HabitRecord> habitRecordList;
@@ -60,17 +74,6 @@ public class Habit implements Serializable {
     }
 
 
-
-    @Override
-    public String toString() {
-        return "Habit{" +
-                "habitId=" + habitId +
-                ", userId=" + userId +
-                ", habitName='" + habitName + '\'' +
-                ", startDate=" + startDate +
-                '}';
-    }
-
     public Integer getHabitId() {
         return habitId;
     }
@@ -96,6 +99,25 @@ public class Habit implements Serializable {
         this.type = type;
     }
 
+    public String getHabitTarget() {
+        return habitTarget;
+    }
 
+    public void setHabitTarget(String habitTarget) {
+        this.habitTarget = habitTarget;
+    }
 
+    @Override
+    public String toString() {
+        return "Habit{" +
+                "habitId=" + habitId +
+                ", userId=" + userId +
+                ", habitName='" + habitName + '\'' +
+                ", habitTarget='" + habitTarget + '\'' +
+                ", status=" + status +
+                ", startDate=" + startDate +
+                ", type=" + type +
+                ", unitTypeId=" + unitTypeId +
+                '}';
+    }
 }

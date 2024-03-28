@@ -71,4 +71,12 @@ public class HabitController {
         return habitService.getTags();
     }
 
+
+
+    @GetMapping("/findOneHabit/{habitId}")
+    public Result getHabitById(@PathVariable Integer habitId){
+        return habitService.getHabitById(habitId);
+    }
+
+
 }
