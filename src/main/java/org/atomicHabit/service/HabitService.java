@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.atomicHabit.dao.HabitDao;
 import org.atomicHabit.dao.HabitRecordDao;
 import org.atomicHabit.dao.UnitTypeDao;
+import org.atomicHabit.dao.WeekHabitRecord;
 import org.atomicHabit.model.*;
 import org.atomicHabit.model.dto.CountRecord;
 import org.atomicHabit.model.dto.MakeChartReq;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
+import java.math.BigInteger;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +39,7 @@ public class HabitService {
     }
 
     public Result addHabit( Habit habit){
+        System.out.println(habit.getUserId());
         Date today=new Date();
             if(habitDao.existsByHabitNameAndUserId(habit.getHabitName(),habit.getUserId())){ //存在相同習慣
               return new Result<>(HABIT_ALREADY_EXIST);
@@ -69,7 +72,8 @@ public class HabitService {
         if(nowHabitOpt.isPresent()){
             Habit nowHabit=nowHabitOpt.get();
             String newName=habit.getHabitName();
-            if(habitDao.existsByHabitNameAndUserId(newName,habit.getUserId())) return new Result<>(HABIT_ALREADY_EXIST);
+            if(habitDao.existsByHabitIdNotAndHabitNameAndUserId(habit.getHabitId(),newName,habit.getUserId()))
+                return new Result<>(HABIT_ALREADY_EXIST);
             else {
                 nowHabit.setHabitTarget(habit.getHabitTarget());
                 nowHabit.setUnitTypeId(habit.getUnitTypeId());
@@ -134,6 +138,23 @@ public class HabitService {
     public Result getTags(){
         List<UnitType> unitTypes=unitTypeDao.findAll();
         return new Result<>(SUCCESS,unitTypes);
+    }
+
+    public Result findLatestWeekRecord(Integer habitId){
+        List<Object[]> habitRecordList=habitDao.findLatestWeekRecord(habitId);
+        List<WeekHabitRecord> recordList = new ArrayList<>();
+
+        for (Object[] data : habitRecordList) {
+            WeekHabitRecord record = new WeekHabitRecord();
+            record.setRecordDate((java.sql.Date) data[0]);
+            record.setHabitRecordId((BigInteger) data[1]);
+            record.setHabitId((BigInteger) data[2]);
+            record.setIsSuccess((BigInteger) data[3]);
+            record.setStatus((BigInteger) data[4]);
+            recordList.add(record);
+        }
+        System.out.println(habitRecordList);
+        return new Result<>(SUCCESS,recordList);
     }
 
 }

@@ -78,5 +78,10 @@ public class HabitController {
         return habitService.getHabitById(habitId);
     }
 
+    @GetMapping("/findLatestWeekRecord/{habitId}")
+    public Result findLatestWeekRecord(@PathVariable Integer habitId){
+        return habitService.findLatestWeekRecord(habitId);
+    }
+
 
 }

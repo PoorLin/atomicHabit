@@ -37,5 +37,4 @@ public class habitConst {
     public static final Integer HABIT_VALUE_INVALID = 3002;
 
 
-
 }

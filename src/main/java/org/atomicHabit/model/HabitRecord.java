@@ -13,6 +13,8 @@ public class HabitRecord implements Serializable {
         return recordDate;
     }
 
+    private Integer isSuccess;
+
     public HabitRecord() {
     }
 
@@ -20,9 +22,7 @@ public class HabitRecord implements Serializable {
         this.recordDate = recordDate;
     }
 
-    public String getReason() {
-        return reason;
-    }
+
 
     public HabitRecord(Integer habitId,Date recordDate,Integer status) {
         this.habitId=habitId;
@@ -30,9 +30,7 @@ public class HabitRecord implements Serializable {
         this.status = status;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer habitRecordId;
@@ -55,10 +53,9 @@ public class HabitRecord implements Serializable {
 
 
     private Integer habitId;
+    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date recordDate;
-
-    private String reason;
 
     public Integer getStatus() {
         return status;
@@ -83,4 +80,11 @@ public class HabitRecord implements Serializable {
     @JoinColumn(name = "habitId" ,insertable = false , updatable = false)
     private Habit habit;
 
+    public Integer getIsSuccess() {
+        return isSuccess;
+    }
+
+    public void setIsSuccess(Integer isSuccess) {
+        this.isSuccess = isSuccess;
+    }
 }
