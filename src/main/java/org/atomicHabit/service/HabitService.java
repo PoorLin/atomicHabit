@@ -7,9 +7,7 @@ import org.atomicHabit.dao.HabitRecordDao;
 import org.atomicHabit.dao.UnitTypeDao;
 import org.atomicHabit.dao.WeekHabitRecord;
 import org.atomicHabit.model.*;
-import org.atomicHabit.model.dto.CountRecord;
-import org.atomicHabit.model.dto.MakeChartReq;
-import org.atomicHabit.model.dto.UpdateHabitStatus;
+import org.atomicHabit.model.dto.*;
 import org.atomicHabit.model.embedId.HabitRecordId;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +42,8 @@ public class HabitService {
             if(habitDao.existsByHabitNameAndUserId(habit.getHabitName(),habit.getUserId())){ //存在相同習慣
               return new Result<>(HABIT_ALREADY_EXIST);
             }else {
+                habit.setBigCount(0);
+                habit.setNowCount(0);
                 habit.setStartDate(today);
                 habit.setStatus(HABITRECORD_INIT);
                 habit=habitDao.save(habit);
@@ -67,7 +67,8 @@ public class HabitService {
         habitDao.save(habit);
        return new Result<>(SUCCESS);
     }
-    public Result updateHabit( Habit habit){
+    public Result editHabit( Habit habit){
+        System.out.println(habit);
         Optional<Habit> nowHabitOpt=habitDao.findById(habit.getHabitId());
         if(nowHabitOpt.isPresent()){
             Habit nowHabit=nowHabitOpt.get();
@@ -75,10 +76,16 @@ public class HabitService {
             if(habitDao.existsByHabitIdNotAndHabitNameAndUserId(habit.getHabitId(),newName,habit.getUserId()))
                 return new Result<>(HABIT_ALREADY_EXIST);
             else {
-                nowHabit.setHabitTarget(habit.getHabitTarget());
+                Integer type=habit.getType();
+                if(type == HABITRECORD_TYPE_NUMBER){
+                    nowHabit.setHabitTarget(null);
+                }else {
+                    nowHabit.setHabitTarget(habit.getHabitTarget());
+                }
+
                 nowHabit.setUnitTypeId(habit.getUnitTypeId());
                 nowHabit.setHabitName(habit.getHabitName());
-                nowHabit.setStatus(habit.getStatus());
+                nowHabit.setType(type);
                 habitDao.save(nowHabit);
                 return new Result<>(SUCCESS);
             }
@@ -86,6 +93,7 @@ public class HabitService {
             return new Result<>(HABIT_NOT_EXIST);
         }
     }
+
 
     public Result updateHabitStatus( UpdateHabitStatus updateHabitStatus){
 
@@ -118,7 +126,7 @@ public class HabitService {
         return new Result<>(SUCCESS);
     }
     public Result compareHabitWithOther(MakeChartReq makeChartReq){
-         Integer countAllUser=habitDao.countAllOneHabit(makeChartReq.getHabitName(),HABITRECORD_INIT);
+        Integer countAllUser=habitDao.countAllOneHabit(makeChartReq.getHabitName(),HABITRECORD_INIT);
         Integer countAllUserSuccess=habitDao.countAllOneHabitSuccess(makeChartReq.getHabitName(),HABITRECORD_SUCCESS);
         Integer countMySuccess=habitDao.countMyOneHabitSuccess(makeChartReq.getHabitName(),makeChartReq.getUserId(),HABITRECORD_SUCCESS);
         Integer countMyAll=habitDao.countMyOneHabit(makeChartReq.getHabitName(),makeChartReq.getUserId(),HABITRECORD_INIT);
@@ -153,8 +161,54 @@ public class HabitService {
             record.setStatus((BigInteger) data[4]);
             recordList.add(record);
         }
-        System.out.println(habitRecordList);
         return new Result<>(SUCCESS,recordList);
+    }
+
+
+    public Result getHrExistYears(Integer userId){
+        List<Integer> years=habitDao.getHrExistYears(userId);
+        return new Result<>(SUCCESS,years);
+    }
+
+    public Result getHrExistYearAndMonth(Integer userId){
+        List<String> yearAndMonth=habitDao.getHrExistYearAndMonth(userId);
+        return new Result<>(SUCCESS,yearAndMonth);
+    }
+
+    public Result findUsersHabitSuccRate(Integer userId){
+
+        List<Object[]> objList=habitDao.countHabitRecordSuccessByUserId(userId);
+        List<HabitAllsuccRateDTO> habitAllsuccRates=new ArrayList<>();
+        for (Object[] data : objList) {
+            HabitAllsuccRateDTO record = new HabitAllsuccRateDTO();
+            record.setIs_success((BigInteger) data[0]);
+            record.setSuccCount((BigInteger) data[1]);
+            habitAllsuccRates.add(record);
+        }
+        return new Result<>(SUCCESS,habitAllsuccRates);
+    }
+    public Result findUsersHabitSuccRateYear(Integer userId,Integer year){
+        List<Object[]> objList=habitDao.countHabitRecordSuccessByUserIdAndYear(userId,year);
+        List<HabitAllsuccRateDTO> habitAllsuccRates=new ArrayList<>();
+        for (Object[] data : objList) {
+            HabitAllsuccRateDTO record = new HabitAllsuccRateDTO();
+            record.setIs_success((BigInteger) data[0]);
+            record.setSuccCount((BigInteger) data[1]);
+            habitAllsuccRates.add(record);
+        }
+        return new Result<>(SUCCESS,habitAllsuccRates);
+    }
+
+    public Result countHabitRecordSuccessByUserIdAndYM(Integer userId,String yearAndMonth){
+        List<Object[]> objList=habitDao.countHabitRecordSuccessByUserIdAndYM(userId,yearAndMonth);
+        List<HabitAllsuccRateDTO> habitAllsuccRates=new ArrayList<>();
+        for (Object[] data : objList) {
+            HabitAllsuccRateDTO record = new HabitAllsuccRateDTO();
+            record.setIs_success((BigInteger) data[0]);
+            record.setSuccCount((BigInteger) data[1]);
+            habitAllsuccRates.add(record);
+        }
+        return new Result<>(SUCCESS,habitAllsuccRates);
     }
 
 }

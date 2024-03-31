@@ -40,7 +40,7 @@ public class HabitController {
     @PutMapping("/{habitId}")
     public Result updateHabit( @RequestBody Habit habit, @PathVariable Integer habitId){
        habit.setHabitId(habitId);
-        return  habitService.updateHabit(habit);
+        return  habitService.editHabit(habit);
     }
     @GetMapping("/{userId}")
     public Result getUserHabits(@PathVariable Integer userId){
@@ -82,6 +82,33 @@ public class HabitController {
     public Result findLatestWeekRecord(@PathVariable Integer habitId){
         return habitService.findLatestWeekRecord(habitId);
     }
+
+    @GetMapping("/findSuccRate/{userId}")
+    public Result findUsersHabitSuccRate(@PathVariable Integer userId){
+        return habitService.findUsersHabitSuccRate(userId);
+    }
+
+    @GetMapping("/findSuccRateYear")
+    public Result findUsersHabitSuccRateYear(  @RequestParam("userId") Integer userId,
+                                               @RequestParam("year") Integer year){
+        return habitService.findUsersHabitSuccRateYear(userId,year);
+    }
+
+    @GetMapping("/findSuccRateYM")
+    public Result findUsersHabitSuccRateYear(  @RequestParam("userId") Integer userId,
+                                               @RequestParam("ym") String yearAndMonth){
+        return habitService.countHabitRecordSuccessByUserIdAndYM(userId,yearAndMonth);
+    }
+    @GetMapping("/getHrExistYears/{userId}")
+    public Result getHrExistYears(@PathVariable Integer userId){
+        return habitService.getHrExistYears(userId);
+    }
+
+    @GetMapping("/getHrExistYearAndMonth/{userId}")
+    public Result getHrExistYearAndMonth(@PathVariable Integer userId){
+        return habitService.getHrExistYearAndMonth(userId);
+    }
+
 
 
 }

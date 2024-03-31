@@ -29,6 +29,10 @@ public class Habit implements Serializable {
 
     private Integer unitTypeId;
 
+    private Integer nowCount;
+
+    private Integer bigCount;
+
     public Integer getUnitTypeId() {
         return unitTypeId;
     }
@@ -119,5 +123,21 @@ public class Habit implements Serializable {
                 ", type=" + type +
                 ", unitTypeId=" + unitTypeId +
                 '}';
+    }
+
+    public Integer getNowCount() {
+        return nowCount;
+    }
+
+    public void setNowCount(Integer nowCount) {
+        this.nowCount = nowCount;
+    }
+
+    public Integer getBigCount() {
+        return bigCount;
+    }
+
+    public void setBigCount(Integer bigCount) {
+        this.bigCount = bigCount;
     }
 }

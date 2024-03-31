@@ -9,6 +9,8 @@ public class habitConst {
 
     public static final Integer HABITRECORD_FAIL = 2;
 
+    public static final Integer HABITRECORD_TYPE_NUMBER = 1;
+
     // 成功
 
     public static final Integer SUCCESS = 200;
