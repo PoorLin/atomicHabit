@@ -1,10 +1,9 @@
 package org.atomicHabit.util;
 
-import com.mysql.cj.util.Base64Decoder;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.atomicHabit.model.User;
+import org.atomicHabit.model.Users;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +15,7 @@ import java.util.Date;
 public class Jwt{
 
     // 生成 JWT
-    public static String generateToken(String subject, User user, long ttlMillis, String secretKey) {
+    public static String generateToken(String subject, Users user, long ttlMillis, String secretKey) {
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
         Date now = new Date();
         Date exp = new Date(now.getTime() + ttlMillis);

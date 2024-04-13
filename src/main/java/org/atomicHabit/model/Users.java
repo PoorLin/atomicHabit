@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class User implements Serializable {
+public class Users implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +16,16 @@ public class User implements Serializable {
 
     public Integer getUserId() {
         return userId;
+    }
+
+    public Users() {
+    }
+
+    public Users(String userName, String email, Integer sex, String secret) {
+        this.userName = userName;
+        this.email = email;
+        this.sex = sex;
+        this.secret = secret;
     }
 
     public void setUserId(Integer userId) {

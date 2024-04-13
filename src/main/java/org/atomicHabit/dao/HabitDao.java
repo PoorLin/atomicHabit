@@ -74,7 +74,7 @@ public interface HabitDao extends JpaRepository<Habit, Integer> {
     List<Object[]> countHabitRecordSuccessByUserIdAndYM(Integer userId,String yearAndMonth);
 
     @Query("SELECT distinct year(hr.recordDate) " +
-            " from User as u join Habit h on u.userId=h.userId join HabitRecord hr on h.habitId=hr.habitId where u.userId = :userId order by year(hr.recordDate) ")
+            " from Users as u join Habit h on u.userId=h.userId join HabitRecord hr on h.habitId=hr.habitId where u.userId = :userId order by year(hr.recordDate) ")
     List<Integer> getHrExistYears(@Param("userId") Integer userId);
 
     @Query("SELECT distinct concat(year(hc.recordDate),'-',LPAD(MONTH(hc.recordDate), 2, '0')) " +

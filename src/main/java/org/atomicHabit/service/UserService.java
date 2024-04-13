@@ -1,26 +1,14 @@
 package org.atomicHabit.service;
 
-import com.nimbusds.jose.jwk.JWKSet;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
 import org.atomicHabit.dao.UserDao;
-import org.atomicHabit.model.Habit;
 import org.atomicHabit.model.Result;
-import org.atomicHabit.model.User;
+import org.atomicHabit.model.Users;
 import org.atomicHabit.util.JavaMail;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.math.BigInteger;
-import java.security.Key;
-import java.security.PublicKey;
-import java.security.interfaces.RSAKey;
-import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
-import java.util.Optional;
+import java.util.List;
 
 import static org.atomicHabit.constance.habitConst.*;
 import static org.atomicHabit.util.JavaMail.genAuthCode;
@@ -42,7 +30,7 @@ public UserService(UserDao userDao){
     this.userDao=userDao;
 }
 
-    public Result addUser(User user){
+    public Result addUser(Users user){
       if(userDao.existsUserByEmailOrUserName(user.getEmail(),user.getUserName())){
           return new Result<>(EMAIL_ALREADY_EXIST);
       }else {
@@ -54,18 +42,22 @@ public UserService(UserDao userDao){
       }
     }
     public Result getUse( Integer id){
-        User user=userDao.findById(id).get();
-        return new Result<User>(SUCCESS,user);
+        Users user=userDao.findById(id).get();
+        return new Result<Users>(SUCCESS,user);
     }
-    public Result updateUser( User user, Integer id){
+    public Result getAllUse(){
+        List<Users> usersList=userDao.findAll();
+        return new Result(SUCCESS,usersList);
+    }
+    public Result updateUser(Users user, Integer id){
     user.setUserId(id);
     userDao.save(user);
     return new Result<>(SUCCESS);
     }
 
-    public Result login( User user){
+    public Result login( Users user){
         String sha256Secret=parseSHA256(user.getSecret());
-        User userRe=userDao.findByEmailAndSecret(user.getEmail(),sha256Secret);
+        Users userRe=userDao.findByEmailAndSecret(user.getEmail(),sha256Secret);
         if(userRe == null){
             return new Result<>(USER_NOT_EXIST);
         }
@@ -83,7 +75,7 @@ public UserService(UserDao userDao){
         return new Result<>(SUCCESS);
     }
 
-    public Result forgotPass( User user){
+    public Result forgotPass( Users user){
         JavaMail javaMail=new JavaMail();
         if(userDao.existsUserByEmail(user.getEmail())){
             javaMail.setPASSWORD(javaSecret);
@@ -99,8 +91,8 @@ public UserService(UserDao userDao){
         }
     }
 
-    public Result ChangePass( User user){
-         User nowUser=userDao.findByEmail(user.getEmail());
+    public Result ChangePass( Users user){
+         Users nowUser=userDao.findByEmail(user.getEmail());
       String newSecret = user.getSecret();
          if( nowUser!= null &&  newSecret!= null){
              String sha256Secret=parseSHA256(newSecret);
