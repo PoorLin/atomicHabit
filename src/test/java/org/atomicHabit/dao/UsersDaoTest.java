@@ -26,9 +26,9 @@ class UsersDaoTest {
                 "123456"
         );
 
-        given(userDao.existsUserByEmail(email))
-                .willReturn(true);   //預設會回傳false
-       //userDao.save(user);
+//        given(userDao.existsUserByEmail(email))
+//                .willReturn(true);   //預設會回傳false
+       userDao.save(user);
         //when
         boolean expected=userDao.existsUserByEmailOrUserName(email,userName);
         //then

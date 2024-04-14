@@ -1,5 +1,6 @@
 package org.atomicHabit.service;
 
+import org.atomicHabit.dao.HabitDao;
 import org.atomicHabit.dao.UserDao;
 import org.atomicHabit.model.Users;
 import org.junit.jupiter.api.AfterAll;
@@ -24,6 +25,8 @@ class UserServiceTest {
 
     @Mock
     private UserDao userDao;
+    @Mock
+    private HabitDao habitDao;
 
 //    private  AutoCloseable autoCloseable;   有了 @ExtendWith(MockitoExtension.class) 就不需要自己建立
     private UserService userServiceTest;
@@ -32,7 +35,7 @@ class UserServiceTest {
     @BeforeEach  //測試開始前會執行
     void setUp() {
 //        autoCloseable =MockitoAnnotations.openMocks(this);
-        userServiceTest = new UserService(userDao);
+        userServiceTest = new UserService(userDao,habitDao);
 
     }
 

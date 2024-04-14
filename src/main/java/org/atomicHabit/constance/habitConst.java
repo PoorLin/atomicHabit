@@ -16,6 +16,8 @@ public class habitConst {
     public static final Integer SUCCESS = 200;
 
 
+
+
     // common fault
     public static final Integer DATA_ERROR = 8001;
 
@@ -37,6 +39,11 @@ public class habitConst {
     public static final Integer HABIT_NOT_EXIST = 3002;
 
     public static final Integer HABIT_VALUE_INVALID = 3002;
+
+
+    public static final String AUTHORIZATION_PROPERTY = "Authorization";
+
+    public static final Integer JWT_EXPIRED = 4001;
 
 
 }
