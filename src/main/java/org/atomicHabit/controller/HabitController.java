@@ -13,7 +13,7 @@ import java.util.Date;
 import static org.atomicHabit.constance.habitConst.HABIT_VALUE_INVALID;
 import static org.atomicHabit.constance.habitConst.SUCCESS;
 
-
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/habit")
 @RestController
 public class HabitController {
@@ -42,7 +42,7 @@ public class HabitController {
        habit.setHabitId(habitId);
         return  habitService.editHabit(habit);
     }
-    @GetMapping("/{userId}")
+    @GetMapping("/findUsersHabits/{userId}")
     public Result getUserHabits(@PathVariable Integer userId){
         return habitService.getUserHabits(userId);
     }
@@ -78,36 +78,7 @@ public class HabitController {
         return habitService.getHabitById(habitId);
     }
 
-    @GetMapping("/findLatestWeekRecord/{habitId}")
-    public Result findLatestWeekRecord(@PathVariable Integer habitId){
-        return habitService.findLatestWeekRecord(habitId);
-    }
 
-    @GetMapping("/findSuccRate/{userId}")
-    public Result findUsersHabitSuccRate(@PathVariable Integer userId){
-        return habitService.findUsersHabitSuccRate(userId);
-    }
-
-    @GetMapping("/findSuccRateYear")
-    public Result findUsersHabitSuccRateYear(  @RequestParam("userId") Integer userId,
-                                               @RequestParam("year") Integer year){
-        return habitService.findUsersHabitSuccRateYear(userId,year);
-    }
-
-    @GetMapping("/findSuccRateYM")
-    public Result findUsersHabitSuccRateYear(  @RequestParam("userId") Integer userId,
-                                               @RequestParam("ym") String yearAndMonth){
-        return habitService.countHabitRecordSuccessByUserIdAndYM(userId,yearAndMonth);
-    }
-    @GetMapping("/getHrExistYears/{userId}")
-    public Result getHrExistYears(@PathVariable Integer userId){
-        return habitService.getHrExistYears(userId);
-    }
-
-    @GetMapping("/getHrExistYearAndMonth/{userId}")
-    public Result getHrExistYearAndMonth(@PathVariable Integer userId){
-        return habitService.getHrExistYearAndMonth(userId);
-    }
 
 
 

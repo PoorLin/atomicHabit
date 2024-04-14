@@ -44,4 +44,36 @@ public UserController(UserService userService){
         return userService.ChangePass(user);
     }
 
+
+    @GetMapping("/findLatestWeekRecord/{habitId}")
+    public Result findLatestWeekRecord(@PathVariable Integer habitId){
+        return userService.findLatestWeekRecord(habitId);
+    }
+
+    @GetMapping("/findSuccRate/{userId}")
+    public Result findUsersHabitSuccRate(@PathVariable Integer userId){
+        return userService.findUsersHabitSuccRate(userId);
+    }
+
+    @GetMapping("/findSuccRateYear")
+    public Result findUsersHabitSuccRateYear(  @RequestParam("userId") Integer userId,
+                                               @RequestParam("year") Integer year){
+        return userService.findUsersHabitSuccRateYear(userId,year);
+    }
+
+    @GetMapping("/findSuccRateYM")
+    public Result findUsersHabitSuccRateYear(  @RequestParam("userId") Integer userId,
+                                               @RequestParam("ym") String yearAndMonth){
+        return userService.countHabitRecordSuccessByUserIdAndYM(userId,yearAndMonth);
+    }
+    @GetMapping("/getHrExistYears/{userId}")
+    public Result getHrExistYears(@PathVariable Integer userId){
+        return userService.getHrExistYears(userId);
+    }
+
+    @GetMapping("/getHrExistYearAndMonth/{userId}")
+    public Result getHrExistYearAndMonth(@PathVariable Integer userId){
+        return userService.getHrExistYearAndMonth(userId);
+    }
+
 }

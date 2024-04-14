@@ -1,12 +1,17 @@
 package org.atomicHabit.service;
 
+import org.atomicHabit.dao.HabitDao;
 import org.atomicHabit.dao.UserDao;
+import org.atomicHabit.dao.WeekHabitRecord;
 import org.atomicHabit.model.Result;
 import org.atomicHabit.model.Users;
+import org.atomicHabit.model.dto.HabitAllsuccRateDTO;
 import org.atomicHabit.util.JavaMail;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -18,6 +23,9 @@ import static org.atomicHabit.util.Jwt.parseSHA256;
 @Service
 public class UserService {
     private UserDao userDao;
+
+    private HabitDao habitDao;
+
     @Value("${jwt.key}")
     private  String jwtKey;
     @Value("${jwt.exipred}")
@@ -26,8 +34,9 @@ public class UserService {
     private String javaSecret;
 
 
-public UserService(UserDao userDao){
+public UserService(UserDao userDao,HabitDao habitDao){
     this.userDao=userDao;
+    this.habitDao=habitDao;
 }
 
     public Result addUser(Users user){
@@ -61,9 +70,9 @@ public UserService(UserDao userDao){
         if(userRe == null){
             return new Result<>(USER_NOT_EXIST);
         }
+
         String token=generateToken(userRe.getUserName(),userRe, Long.parseLong(jwtExpired),jwtKey);
         userRe.setToken(token);
-        System.out.println(token);
         return new Result<>(SUCCESS,userRe);
     }
     public Result loginByGoogle( String token){
@@ -104,4 +113,67 @@ public UserService(UserDao userDao){
          }
     }
 
+
+    public Result findLatestWeekRecord(Integer habitId){
+        List<Object[]> habitRecordList=habitDao.findLatestWeekRecord(habitId);
+        List<WeekHabitRecord> recordList = new ArrayList<>();
+
+        for (Object[] data : habitRecordList) {
+            WeekHabitRecord record = new WeekHabitRecord();
+            record.setRecordDate((java.sql.Date) data[0]);
+            record.setHabitRecordId((BigInteger) data[1]);
+            record.setHabitId((BigInteger) data[2]);
+            record.setIsSuccess((BigInteger) data[3]);
+            record.setStatus((BigInteger) data[4]);
+            recordList.add(record);
+        }
+        return new Result<>(SUCCESS,recordList);
+    }
+
+
+    public Result getHrExistYears(Integer userId){
+        List<Integer> years=habitDao.getHrExistYears(userId);
+        return new Result<>(SUCCESS,years);
+    }
+
+    public Result getHrExistYearAndMonth(Integer userId){
+        List<String> yearAndMonth=habitDao.getHrExistYearAndMonth(userId);
+        return new Result<>(SUCCESS,yearAndMonth);
+    }
+
+    public Result findUsersHabitSuccRate(Integer userId){
+
+        List<Object[]> objList=habitDao.countHabitRecordSuccessByUserId(userId);
+        List<HabitAllsuccRateDTO> habitAllsuccRates=new ArrayList<>();
+        for (Object[] data : objList) {
+            HabitAllsuccRateDTO record = new HabitAllsuccRateDTO();
+            record.setIs_success((BigInteger) data[0]);
+            record.setSuccCount((BigInteger) data[1]);
+            habitAllsuccRates.add(record);
+        }
+        return new Result<>(SUCCESS,habitAllsuccRates);
+    }
+    public Result findUsersHabitSuccRateYear(Integer userId,Integer year){
+        List<Object[]> objList=habitDao.countHabitRecordSuccessByUserIdAndYear(userId,year);
+        List<HabitAllsuccRateDTO> habitAllsuccRates=new ArrayList<>();
+        for (Object[] data : objList) {
+            HabitAllsuccRateDTO record = new HabitAllsuccRateDTO();
+            record.setIs_success((BigInteger) data[0]);
+            record.setSuccCount((BigInteger) data[1]);
+            habitAllsuccRates.add(record);
+        }
+        return new Result<>(SUCCESS,habitAllsuccRates);
+    }
+
+    public Result countHabitRecordSuccessByUserIdAndYM(Integer userId,String yearAndMonth){
+        List<Object[]> objList=habitDao.countHabitRecordSuccessByUserIdAndYM(userId,yearAndMonth);
+        List<HabitAllsuccRateDTO> habitAllsuccRates=new ArrayList<>();
+        for (Object[] data : objList) {
+            HabitAllsuccRateDTO record = new HabitAllsuccRateDTO();
+            record.setIs_success((BigInteger) data[0]);
+            record.setSuccCount((BigInteger) data[1]);
+            habitAllsuccRates.add(record);
+        }
+        return new Result<>(SUCCESS,habitAllsuccRates);
+    }
 }
