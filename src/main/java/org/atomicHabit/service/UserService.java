@@ -120,7 +120,7 @@ public UserService(UserDao userDao,HabitDao habitDao){
 
         for (Object[] data : habitRecordList) {
             WeekHabitRecord record = new WeekHabitRecord();
-            record.setRecordDate(((java.sql.Date) data[0]).toString());
+            record.setRecordDate((java.sql.Date) data[0]);
             record.setHabitRecordId((BigInteger) data[1]);
             record.setHabitId((BigInteger) data[2]);
             record.setIsSuccess((BigInteger) data[3]);
