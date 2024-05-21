@@ -6,20 +6,20 @@ import java.math.BigInteger;
 import java.sql.Date;
 
 public class WeekHabitRecord implements Serializable {
-    private Date recordDate;
+    private String recordDate;
     private BigInteger habitRecordId;
     private BigInteger habitId;
     private BigInteger isSuccess;
     private BigInteger status;
 
-    public Date getRecordDate() {
+
+    public String getRecordDate() {
         return recordDate;
     }
 
-    public void setRecordDate(Date recordDate) {
+    public void setRecordDate(String recordDate) {
         this.recordDate = recordDate;
     }
-
 
     public BigInteger getHabitRecordId() {
         return habitRecordId;
